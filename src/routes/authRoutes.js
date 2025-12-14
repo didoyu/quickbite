@@ -83,33 +83,37 @@ router.post("/register", async (req, res )=>{
 });
 
 // The login route remains the same as provided previously
-router.post("/login", async (req, res ) => {
+router.post("/login", async (req, res) => {
     try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) return res.status(400).json({message: "All fields are required"});
+        const { username, password } = req.body; // <-- expect username
 
-        const user = await User.findOne( { email });
-        if(!user) return res.status(400).json({ message: "Invalid Credentials"});
+        if (!username || !password)
+            return res.status(400).json({ message: "All fields are required" });
+
+        // Find user by username instead of email
+        const user = await User.findOne({ username });
+        if (!user) return res.status(400).json({ message: "Invalid Credentials" });
 
         const isPasswordCorrect = await user.comparePassword(password);
-        if(!isPasswordCorrect) return res.status(400).json({ message: "Invalid Credentials"});
+        if (!isPasswordCorrect)
+            return res.status(400).json({ message: "Invalid Credentials" });
 
         const token = generateToken(user._id);
+
         res.status(201).json({
             token,
-            user:{
+            user: {
                 _id: user._id,
                 username: user.username,
                 email: user.email,
                 profileImage: user.profileImage,
             },
         });
-
-    } catch  (error) {
+    } catch (error) {
         console.log("Error in login route", error);
-        return res.status(500).json({message: "Internal server error"});
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
+
 
 export default router;
