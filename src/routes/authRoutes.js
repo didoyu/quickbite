@@ -107,6 +107,8 @@ router.post("/login", async (req, res) => {
                 username: user.username,
                 email: user.email,
                 profileImage: user.profileImage,
+                firstName: user.firstName,  // <-- add this
+                lastName: user.lastName,    // optional
             },
         });
     } catch (error) {
