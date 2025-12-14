@@ -40,6 +40,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    phone: { type: String, required: false, unique: true, sparse: true },
+    birthdate: { type: String, default: '00-00-0000' }, // Store as string in MM-DD-YYYY format
+    gender: { type: String, enum: ['Male', 'Female', 'Other'], default: 'Other' },
+    civilStatus: { type: String, enum: ['Single', 'Married', 'Divorced', 'Widowed', 'Separated'], default: 'Single' },
+    nationality: { type: String, default: 'Filipino' },
+    street: { type: String, default: '' },
+    city: { type: String, default: '' },
+    province: { type: String, default: '' },
+    profileImage: { type: String, default: "" },
 
 },
     {timestamps: true}
